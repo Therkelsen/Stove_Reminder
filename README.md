@@ -6,4 +6,4 @@ v0.0 - Created GitHub folder and basic documents.
 
 v0.1 - Created template code for when we've got the main components working with the Arduino.
 
-v0.2 - Added line for IR Sensor.
+v0.2 - Added line for IR Sensor and deleted unused folder: "Documents".

@@ -50,6 +50,7 @@
 
   void setup() {
 
+    Serial.begin(9600);
     pinMode(buzzer, OUTPUT);
     
   }
@@ -59,12 +60,15 @@
     irSensorMaxValue = 500;
 
     irSensor1Value = analogRead(irSensor1);
+    irSensor1Value = map(irSensor1Value,0,600,500,0);
 
     thermistor1Value = analogRead(thermistor1);
 
     buzzerFrequency = 500;
 
     timer = 500;
+
+    Serial.println(irSensor1Value);
     
     // If temperature is bigger than or equal to max temperature and there is no pot on the stove
     if(thermistor1Value >= thermistorMax && irSensor1Value >= irSensorMaxValue){

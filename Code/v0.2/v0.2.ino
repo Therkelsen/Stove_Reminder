@@ -57,13 +57,13 @@
   
   void loop() {
 
-    irSensorMaxValue = 500;
+    irSensorMaxValue = 250;
 
     irSensor1Value = analogRead(irSensor1);
     irSensor1Value = map(irSensor1Value,0,600,500,0);
 
     thermistor1Value = analogRead(thermistor1);
-
+    
     buzzerFrequency = 500;
 
     timer = 500;
@@ -75,14 +75,18 @@
 
       // Play warning noise
       tone(buzzer,buzzerFrequency);
+      Serial.println("Alarm on");
       delay(timer);
       noTone(buzzer);
+      Serial.println("Alarm wait");
+      delay(timer);
 
       // If temperature is bigger than or equal to max temperature and there is a pot on the stove
-      } else if (thermistor1Value >= thermistorMax && irSensor1Value > irSensorMaxValue) {
+      } else {
         
           // Don't play a warning noise
           noTone(buzzer);
+          Serial.println("Alarm off");
         
         }
   

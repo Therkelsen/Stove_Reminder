@@ -17,6 +17,8 @@
   
   int irSensorMaxValue;
 
+  bool potOnStove;
+
   /////////////////////////////
   //Variables for thermistors//
   /////////////////////////////
@@ -35,6 +37,8 @@
   
   int thermistorMax;
 
+  bool temperatureTooHigh;
+
   //////////////////////////////
   //Variables for piezo buzzer//
   //////////////////////////////
@@ -52,26 +56,34 @@
 
     Serial.begin(9600);
     pinMode(buzzer, OUTPUT);
+
+    irSensorMaxValue = 250;
+
+    thermistorMax = 500;
+    
+    buzzerFrequency = 500;
+
+    timer = 500;
     
   }
   
   void loop() {
 
-    irSensorMaxValue = 250;
-
     irSensor1Value = analogRead(irSensor1);
     irSensor1Value = map(irSensor1Value,0,600,500,0);
 
-    thermistor1Value = analogRead(thermistor1);
+    potOnStoveChecker();
+
+    temperatureChecker();
     
-    buzzerFrequency = 500;
+    //thermistor1Value = analogRead(thermistor1);
+    thermistor1Value = 600;
 
-    timer = 500;
 
-    Serial.println(irSensor1Value);
+    //Serial.println(irSensor1Value);
     
     // If temperature is bigger than or equal to max temperature and there is no pot on the stove
-    if(thermistor1Value >= thermistorMax && irSensor1Value >= irSensorMaxValue){
+    if(temperatureTooHigh == true && potOnStove == false){
 
       // Play warning noise
       tone(buzzer,buzzerFrequency);
@@ -89,5 +101,37 @@
           Serial.println("Alarm off");
         
         }
-  
+
   }
+
+  void potOnStoveChecker(){
+    
+    if(irSensor1Value < irSensorMaxValue){
+      
+      potOnStove = true;
+      Serial.println("Pot on stove.");
+      
+      } else {
+        
+        potOnStove = false;
+        Serial.println("No pot on stove.");
+        
+        }
+    
+    }
+
+  void temperatureChecker(){
+    
+    if(thermistor1Value >= thermistorMax){
+      
+      temperatureTooHigh = true;
+      Serial.println("Temperature over max.");
+      
+      } else {
+        
+        temperatureTooHigh = false;
+        Serial.println("Temperature under max.");
+        
+        }
+    
+    }

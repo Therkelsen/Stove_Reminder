@@ -1,4 +1,12 @@
 
+  /////////////////////////////
+  //  Kira, Signe & Thomas T //
+  //  2.z - Programmering B  //
+  //  Stove_Reminder         //
+  //  Version 0.3            //
+  //  5. april 2018          //
+  /////////////////////////////
+
   #include <thermistor.h>
   #include "HardwareSerial.h"
   

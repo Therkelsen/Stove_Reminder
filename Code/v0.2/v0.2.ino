@@ -1,4 +1,13 @@
 
+  /////////////////////////////
+  //  Kira, Signe & Thomas T //
+  //  2.z - Programmering B  //
+  //  Stove_Reminder         //
+  //  Version 0.2.2          //
+  //  5. april 2018          //
+  /////////////////////////////
+
+
   ////////////////////////////
   //Variables for IR sensors//
   ////////////////////////////

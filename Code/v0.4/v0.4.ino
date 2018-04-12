@@ -32,13 +32,25 @@
   const int buzzer = 5;
   int buzzerFrequency;
 
-  const int LED = 7;
+  int LED = 7;
 
   //////////////////////
   //Variable for timer//
   //////////////////////
 
   unsigned long int timer;
+
+  int grn = 75;           //100
+
+  int temp0;
+
+  int temppMax = 400;
+
+  unsigned long cTime;
+
+  int dely = 5000; //300000
+
+  unsigned long pTime = 0;
 
   void setup() {
 
@@ -48,49 +60,16 @@
 
     irSensorMaxValue = 250;
 
-    tempMax = 300;
-
     timer = 750;
-    
+
   }
   
   void loop() {
-
+    cTime = millis();
     Serial.println("______________________________");
+    tjekTemp();
     potOnStoveChecker();
-
-    temperatureChecker();
-
-    //Serial.println(irSensor1Value);
-    
-    // If temperature is bigger than or equal to max temperature and there is no pot on the stove
-    if(temperatureTooHigh == true && potOnStove == false){
-
-      // Turn on LED
-      digitalWrite(LED,HIGH);
-      
-      // Play warning noise
-      tone(buzzer,500);
-      Serial.println("Alarm on");
-      delay(timer);
-      noTone(buzzer);
-      Serial.println("Alarm wait");
-      delay(timer);
-
-      // If temperature is bigger than or equal to max temperature and there is a pot on the stove
-      } else {
-
-          // Turn off LED
-          digitalWrite(LED,LOW);
-          
-          // Don't play a warning noise
-          noTone(buzzer);
-          Serial.println("Alarm off");
-        
-        }
-      
-      delay(timer);
-
+    delay(dely);
   }
 
   void potOnStoveChecker(){
@@ -111,21 +90,59 @@
         }
     
     }
-
-  void temperatureChecker(){
-
-    temp = thermistor.read();
-
-    if(temp >= tempMax){
-
-      temperatureTooHigh = true;
-      Serial.println("Temperature over max.");
-      
-      } else {
-        
-        temperatureTooHigh = false;
-        Serial.println("Temperature under max.");
-        
-        }
     
+    void tjekTemp () {
+    temp = thermistor.read();
+    if(cTime - pTime >= dely){
+      if(temp>=temppMax) {
+        alarm ();
+        } else {
+          alarmOff ();
+        }
+      if(temp - temp0 >= grn) {
+        if(potOnStove == false){
+          alarm ();
+          } else {
+            alarmOff ();
+          }
+      }
+    if(temp-temp0>=grn-3 && temp-temp0<grn) {
+      grn-3; 
+     }
+     pTime=cTime;
+     temp0=temp;
     }
+    }
+
+    
+    void alarm () {
+      // Alarm
+      Serial.println("Alarm");
+      digitalWrite(LED, HIGH);
+      tone(buzzer,500);
+      delay(dely);
+      Serial.println("Wait");
+      digitalWrite(LED, LOW);
+      noTone(buzzer);
+      delay(timer);
+    }
+
+    void alarmOff() {
+          // Alarm off
+          digitalWrite(LED,LOW);
+          noTone(buzzer);
+          Serial.println("Errthing's fine");
+    }
+
+
+
+
+
+
+
+
+
+
+
+    
+

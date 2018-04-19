@@ -41,3 +41,6 @@ Yellow wires = Pins
 
 Breadboard 1: Most of the wires and the important components; IR sensor and Thermistor.
 Breadboard 2: LED and the newly coded buzzer.
+
+v1.0.X -
+Final edition of the code, put the real values in the variables used to determine whether there is an actual problem going on.

@@ -99,48 +99,47 @@
     
     }
     
-    void checkTemp () {                             //  Function to check the temperature
+    void checkTemp () {                               //  Function to check the temperature
       
-    temp = thermistor.read();                       //  Set variable to contain the read from the thermistor (Temperature calculations done in the imported library)
-    
-    if(cTime - pTime >= dely){                      //  If time since Arduino started - last time this function was run >= dely, go in to the statement
+      temp = thermistor.read();                       //  Set variable to contain the read from the thermistor (Temperature calculations done in the imported library)
       
-      if(temp >= tempMax) {                         //  If temperature >= absolute maximum temperature...
+      if(cTime - pTime >= dely){                      //  If time since Arduino started - last time this function was run >= dely, go in to the statement
         
-        alarm ();                                   //  ... start the alarm
-        
-        } else {                                    //  If not...
+        if(temp >= tempMax) {                         //  If temperature >= absolute maximum temperature...
           
-          alarmOff ();                              //  ... stop the alarm
+          alarm ();                                   //  ... start the alarm
           
+          } else {                                    //  If not...
+            
+            alarmOff ();                              //  ... stop the alarm
+            
+           }
+          
+        if(temp - temp0 >= limit) {                   //  If the change in temperature since the last time this was run is bigger than the limit, go into the statement
+         
+          if(potOnStove == false){                    //  If there is no pot on the stove...
+  
+            alarm ();                                 //  ... start the alarm
+            
+            } else {                                  //  If not...
+              
+              alarmOff ();                            //  ... stop the alarm
+              
+              }
         }
         
-      if(temp - temp0 >= limit) {                   //  If the change in temperature since the last time this was run is bigger than the limit, go into the statement
-       
-        if(potOnStove == false){                    //  If there is no pot on the stove...
-
-          alarm ();                                 //  ... start the alarm
+        if(temp - temp0 >= limit - 3 && temp - temp0 < limit) {   //  If the change in temperature is big, but not bigger than the limit...
           
-          } else {                                  //  If not...
-            
-            alarmOff ();                            //  ... stop the alarm
-            
-          }
+          limit - 3;                                    //  ... make the limit smaller for next check.
+          
+        }
+       
+       pTime = cTime;                                   //  Set previous time to contain the amount of time since Arduino started, as of right now
+       temp0 = temp;                                    //  Set start temperature to contain the current temperature
+       
       }
-      
-    if(temp-temp0>=limit-3 && temp-temp0<limit) {   //  If the change in temperature is big, but not bigger than the limit...
-      
-      limit-3;                                      //  ... make the limit smaller for next check.
-      
-     }
-     
-     pTime=cTime;                                   //  Set previous time to contain the amount of time since Arduino started, as of right now
-     temp0=temp;                                    //  Set start temperature to contain the current temperature
-     
-    }
     }
 
-    
     void alarm () {                                 //  Alarm function
       // Alarm
       Serial.println("Alarm");
